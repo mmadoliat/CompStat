@@ -1,9 +1,25 @@
-# SCR
+## Resources for "Statistical Computing with R, Second Edtion"
 
-Resources for the book "Statistical Computing with R" by Maria L. Rizzo
-
-"Statistical Computing with R, Second Edition" by Maria L. Rizzo (2019), Chapman & Hall/CRC Press. 
-
-This repository contains resouces for both the first edition and the second edition.
+Resources and files for "Statistical Computing with R 2nd edition" by Maria Rizzo, Chapman & Hall/CRC (2019)
 
 
+* R code for the examples, by chapter
+* Other source files (Rcpp, R Markdown) used in a few examples
+* Tutorials or examples as supplements to the second edition
+
+URL:  https://www.crcpress.com/Statistical-Computing-with-R-Second-Edition/Rizzo/p/book/9781466553323
+
+Bibtex entry:
+
+@book{SCR2,  
+  title = "Statistical Computing with {R}",  
+  edition = "second",  
+  author = "Maria L. Rizzo",  
+  year = "2019",  
+  publisher = "Chapman \& Hall/CRC",  
+  series = "The {R} Series",  
+  isbn = "9781466553323",  
+  }  
+  
+
+  
