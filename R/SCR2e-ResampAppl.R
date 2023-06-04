@@ -44,7 +44,7 @@ for (i in 1:n) {
   jack.se[i] <- sd(theta.b[keep])
 }
 
-print(boot.obj)  #for se_boot
+print(boot.out)  #for se_boot
 se.bar <- mean(jack.se)
 se.se <- sqrt((n-1) * mean((jack.se - se.bar)^2))
 print(paste("Jackknife-after-bootstrap est. se(se)=", se.se))

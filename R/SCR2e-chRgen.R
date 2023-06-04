@@ -48,7 +48,7 @@ x <- as.integer(u > 0.6)   #(u > 0.6) is a logical vector
 
 mean(x)
 var(x)
-
+ 
 
 ### Example 3.5 (Geometric distribution)
 
@@ -421,7 +421,7 @@ runif.sphere <- function(n, d) {
 }
 
 #generate a sample in d=2 and plot
-X <- runif.sphere(200, 2)
+X <- runif.sphere(2000, 3)
 par(pty = "s")
 plot(X, xlab = bquote(x[1]), ylab = bquote(x[2]))
 par(pty = "m")

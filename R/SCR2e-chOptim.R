@@ -17,14 +17,14 @@
 
     curve(f(x), from = 2, to = 15, ylab = "f(x)")
     
-    optimize(f, lower = 4, upper = 8, maximum = TRUE)
-
+    res <- optimize(f, lower = 4, upper = 8, maximum = TRUE)
+    abline(v=res$maximum)
 
 ### Example 14.2 (MLE: Gamma distribution)
 
     m <- 20000
     est <- matrix(0, m, 2)
-    n <- 200
+    n <- 2000
     r <- 5
     lambda <- 2
 
@@ -62,16 +62,31 @@
         - loglik
         }
 
+    ll <- function(theta, data) {
+      r <- theta[1]
+      lambda <- theta[2]
+      n=length(data)
+      loglik <- n*r*log(lambda) + (r-1)*sum(log(data)) - lambda*sum(data) - n*log(gamma(r))
+      -loglik
+    }
+    
     n <- 200
     r <- 5;    lambda <- 2
     x <- rgamma(n, shape=r, rate=lambda)
 
     optim(c(1,1), LL, sx=sum(x), slogx=sum(log(x)), n=n)
+    optim(c(1,1), ll, data=x)
 
-    mlests <- replicate(20000, expr = {
+    system.time(mlests <- replicate(20000, expr = {
       x <- rgamma(200, shape = 5, rate = 2)
       optim(c(1,1), LL, sx=sum(x), slogx=sum(log(x)), n=n)$par
-      })
+      }))
+
+    system.time(mlests <- replicate(20000, expr = {
+      x <- rgamma(200, shape = 5, rate = 2)
+      optim(c(1,1), ll, data=x)$par
+    }))
+
     colMeans(t(mlests))
 
 
@@ -87,7 +102,7 @@
         return( -sum(log(f)))
         }
 
-    set.seed(543)
+    set.seed(9)
     m <- 2000
     lambda <- c(.6, .25, .15)  #rate is 1/(2lambda)
     lam <- sample(lambda, size = 2000, replace = TRUE)
@@ -103,7 +118,7 @@
 
 ### Example 14.5 (EM algorithm for a mixture model)
 
-    set.seed(543)
+    set.seed(9)
     lambda <- c(.6, .25, .15)  #rate is 1/(2lambda)
     lam <- sample(lambda, size = 2000, replace = TRUE)
     y <- rgamma(m, shape = .5, rate = 1/(2*lam))

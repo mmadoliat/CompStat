@@ -5,8 +5,8 @@
 ###       ISBN 9781466553323 - CAT# K15269          ###
 ###       January 2019                              ###
 ###                                                 ###
-###       R code for Chapter 10                     ###
-###       Permutation Tests                         ###
+###       R code for Chapter 12                     ###
+###       Probability Density Estimation            ###
 #######################################################
 
 # packages to install: ash, ggplot2 
@@ -279,8 +279,8 @@
     #rmvn.eigen from Chapter 3 used to generate data
     #alternately mvrnorm (MASS) can be used here
     
-    x <- rmvn.eigen(n, c(0, 0), Sigma=Sigma)
-    #x <- MASS::mvrnorm(n, c(0, 0), Sigma)
+#   x <- rmvn.eigen(n, c(0, 0), Sigma=Sigma)
+    x <- MASS::mvrnorm(n, c(0, 0), Sigma)
     b <- bin2(x, nbin = nbin)
     # kopt is the kernel type, here triangular
     est <- ash2(b, m = m, kopt = c(1,0))

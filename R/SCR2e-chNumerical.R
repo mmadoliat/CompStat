@@ -11,6 +11,43 @@
 
 # packages to install: gsl
 
+### Example 13.0 (Some Brain Teasers)
+
+# TRUE or FALSE?
+1==1
+3-2==1
+0.3-0.2==0.1
+0.4-0.2==0.2
+
+# TRUE or FALSE?
+0==0
+1-1==0
+1-1+.1==.1
+1+.1-1==.1
+
+# https://www.omnicalculator.com/math/binary-fraction
+# https://www.truenorthfloatingpoint.com/problem
+
+as.integer(2^31-1)
+as.integer(2^31)
+
+# One last example
+n <- 1000; M <- 2^100
+c1 <- rgb(173,216,230,max = 255, alpha = 80, names = "lt.blue")
+c2 <- rgb(255,192,203, max = 255, alpha = 80, names = "lt.pink")
+
+A <- rnorm(n,mean = M,sd = M)
+B <- rnorm(n,mean = -M,sd = M)
+hist(A,col=c1,xlim = range(c(A,B)))
+hist(B,col=c2,add=T)
+
+all.equal(A+B-A-B,rep(0,n))
+sum(abs(A+B-A-B))
+sum(A+B-A-B==0)
+boxplot(A-A+B-B, main="A-A+B-B")
+boxplot((A+B-A-B), main="A+B-A-B")
+boxplot(jitter(A+B-A-B), main="A+B-A-B")
+
 ### Example 13.1 (Identical and nearly equal)
 
     isTRUE(all.equal(.2, .3 - .1))
@@ -156,6 +193,14 @@
     plot(ro, v, type="l", xlab=expression(rho),
          ylab="Integral Value (n=10, r=0.5)")
 
+# R Note 13.4
+    print2 <- function(x1,x2=0) print(paste("x1 =",x1,", x2 =",x2))
+    print2(x1=1, 2)
+    print2(x2=2, 1)
+    print2(x1=1)
+    print2(1)
+    print2(x=5, x2=2)
+    print2(x=5, x1=1)
 
 ### Example 13.9 (Density of sample correlation coefficient)
 

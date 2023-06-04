@@ -29,7 +29,7 @@
 
 ### Example 6.3 (Monte Carlo integration, unbounded interval)
 
-    x <- seq(.1, 2.5, length = 10)
+    x <- seq(.1, 2.5, length = 100)
     m <- 10000
     u <- runif(m)
     cdf <- numeric(length(x))
@@ -54,6 +54,12 @@
     Phi <- pnorm(x)
     print(round(rbind(x, p, Phi), 3))
 
+    # x <- seq(-4, 4, length = 50) # and rerun from line 33
+    par(mfrow=c(1,2))
+    plot(x,Phi)
+    points(x,p,col=3)
+    plot(x,Phi)
+    points(x,cdf,col=2)
 
 ### Example 6.5 (Error bounds for MC integration)
 
@@ -66,7 +72,30 @@
     c(cdf, v)
     c(cdf - 1.96 * sqrt(v), cdf + 1.96 * sqrt(v))
 
+### Example 6.5, cont.
+    
+    m <- 10000
+    x <- seq(-4, 4, length = 50)
 
+    u <- runif(m)
+    g1 <- 0.5+exp(-(outer(u,x,"*"))^2/2)%*%diag(x)/sqrt(2*pi)
+    cdf1 <- apply(g1,2,mean)
+    vcdf1 <- apply(g1,2,var) / m
+    
+    z <- rnorm(m)
+    g2 <- outer(z,x,"<")
+    cdf2 <- apply(g2,2,mean)
+    vcdf2 <- apply(g2,2,var) / m
+
+    cdf <- pnorm(x)
+    data <- data.frame(cbind(x,cdf,cdf1,vcdf1,cdf2,vcdf2))
+    library("ggplot2")
+    ggp <- ggplot(data, aes(x, cdf)) + geom_line()
+    ggp + geom_ribbon(aes(ymin = cdf1-1.96*sqrt(vcdf1), ymax = cdf1+1.96*sqrt(vcdf1)), alpha = 0.2,col=3) + 
+      ggtitle("Method 1 : Uniform Sample") + theme(plot.title = element_text(face = "bold", size = (25)))
+    ggp + geom_ribbon(aes(ymin = cdf2-1.96*sqrt(vcdf2), ymax = cdf2+1.96*sqrt(vcdf2)), alpha = 0.2,col=2) + 
+      ggtitle("Method 2 : Normal Sample") + theme(plot.title = element_text(face = "bold", size = (25)))
+    
 ### Example 6.6 (Antithetic variables)
 
     MC.Phi <- function(x, R = 10000, antithetic = TRUE) {

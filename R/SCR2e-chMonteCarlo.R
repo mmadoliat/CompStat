@@ -28,9 +28,21 @@
 
     n <- 20
     m <- 1000
+    mean <- numeric(m)
+    for (i in 1:m) {
+      x <- rnorm(n); #x[1] <- rt(1,df=1); #x[1:2] <- rt(2,df=1)
+      mean[i] <- mean(x)
+    }
+    mse <- mean(mean^2)
+    mse
+    sqrt(sum((mean - mean(mean))^2)) / m    #se
+    
+    n <- 20
+    m <- 1000
     tmean <- numeric(m)
     for (i in 1:m) {
-        x <- sort(rnorm(n))
+        x <- rnorm(n); #x[1] <- rt(1,df=1); #x[1:2] <- rt(4,df=1)
+        x <- sort(x)
         tmean[i] <- sum(x[2:(n-1)]) / (n-2)
         }
     mse <- mean(tmean^2)
@@ -41,7 +53,7 @@
     m <- 1000
     tmean <- numeric(m)
     for (i in 1:m) {
-        x <- sort(rnorm(n))
+        x <- rnorm(n); #x[1] <- rt(1,df=1); #x[1:2] <- rt(2,df=1)
         tmean[i] <- median(x)
         }
     mse <- mean(tmean^2)
@@ -136,6 +148,7 @@
 
     n <- c(10, 20, 30, 50, 100, 500) #sample sizes
     cv <- qnorm(.975, 0, sqrt(6/n))  #crit. values for each n
+    #cv <- qnorm(.975, 0, sqrt(6*(n-2) / ((n+1)*(n+3))))
 
     sk <- function(x) {
         #computes the sample skewness coeff.
@@ -228,7 +241,9 @@
     ggplot(df, aes(x=epsilon, y=power)) +
       geom_line() + labs(x=bquote(epsilon)) +
       geom_hline(yintercept=.1, lty=2) +
-      geom_pointrange(aes(ymin=lower, ymax=upper))
+      geom_pointrange(aes(ymin=lower, ymax=upper)) #+
+      #geom_ribbon(aes(ymin=lower, ymax=upper),alpha=.1)
+      
     
 
 ### Example 7.11 (Power comparison of tests of normality)
