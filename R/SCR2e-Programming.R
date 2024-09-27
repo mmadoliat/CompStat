@@ -211,7 +211,7 @@
   # method 1
   AB <- as.vector(by(S$AB, S$playerID, FUN = sum))
   H <- as.vector(by(S$H, S$playerID, FUN = sum))
-  S <- data.frame(playerID = unique(S$playerID), 
+  S <- data.frame(playerID = unique(S$playerID),
                   AB = AB, H = H, AVG = round(H / AB, 3),
                   stringsAsFactors = FALSE)
   S400 <- S[S$AB >= 400, ]
