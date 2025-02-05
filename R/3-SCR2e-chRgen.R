@@ -106,18 +106,28 @@ k <- 0      #counter for accepted
 j <- 0      #iterations
 y <- numeric(n)
 
+alph <- 2; bet <- 2; c. <- 6
+f <- function(x) {return(x^(alph-1)*(1-x)^(bet-1)/beta(alph,bet))}
+g <- function(x) {return(rep(1,length(x)))}
+xs <- seq(0,1,len=100)
+plot(xs,f(xs), type="l", ylim=c(0,c.))
+points(xs,g(xs), type = "l", col=2)
+points(xs,c.*g(xs), type = "l", col=3)
+legend("topright", c("f(x)","g(x)","c.g(x)"),col=1:3, lty=1)
+
 while (k < n) {
   u <- runif(1)
   j <- j + 1
   x <- runif(1)  #random variate from g
-  if (x * (1-x) > u) {
+  if (f(x)/(c.*g(x)) > u) {
     #we accept x
     k <- k + 1
     y[k] <- x
   }
 }
-
 j
+
+hist(y, probability = T); points(xs,f(xs), type="l")
 
 #compare empirical and theoretical percentiles
 p <- seq(.1, .9, .1)
