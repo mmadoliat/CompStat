@@ -5,6 +5,11 @@ hm <- hilbert(11); x <- 1:nrow(hm); xo <- x+rnorm(length(x),0,.01)
 y <- solve(hm)%*%x
 ye <- solve(hm)%*%xo
 
+lam <- 0.001; diag(lam,11)
+inv.rhm <- solve(hm+diag(lam,11))
+y <- inv.rhm%*%x
+ye <- inv.rhm%*%xo
+
 ########################## 1D-Basis #########################
 rm(list=ls()); require("splines")
 
