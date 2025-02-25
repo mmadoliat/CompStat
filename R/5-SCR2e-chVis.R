@@ -24,7 +24,7 @@
 
     panel.d <- function(x, ...) {
         usr <- par("usr")
-        on.exit(par(usr))
+        on.exit(par(usr = usr))
         par(usr = c(usr[1:2], 0, .5))
         lines(density(x))
      }
