@@ -122,7 +122,7 @@
 
 ### Example 8.8 (Failure of jackknife)
 
-    set.seed(123) #for the specific example given
+    set.seed(137) #for the specific example given
     #change the seed to see other examples
 
     n <- 10
