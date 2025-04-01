@@ -413,3 +413,22 @@
         lines(density(0, width=2, kern=kernels[i]), lty=i)
     legend("topright", legend=kernels[1:5],
         lty=1:5, inset=.02)
+
+################################################################################
+    n <- 1000; x <- rnorm(n); x <- sort(x); h <- 1
+    grids <- (-50:50)/10; df <- 2
+    dtdf <- function(x,mu) {dt((x-mu)/h,df=df)/h}
+    dchidf <- function(x,mu) {dchisq((x-mu)/h,df=df)/h}
+    kern <- dtdf
+    
+    kerns <- outer(grids,x,kern)
+    matplot(grids,kerns, type="l")
+    
+    par(ask=T)
+    for (i in c(2^seq(1,log2(n)),n)) {
+      est <- apply(kerns[,1:i], 1, mean)
+      matplot(grids, kerns[,1:i]/i, type="l", ylim=range(c(est,dnorm(grids))))
+      points(grids, est, type="l", lwd=3, col="red")
+      points(grids, dnorm(grids), type="l", lwd=1, lty=2, col="green")
+    }
+    
