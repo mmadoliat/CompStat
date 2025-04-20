@@ -28,7 +28,7 @@
     mb <- microbenchmark(
       seq(1, n, 1),
       seq.int(1, n, 1),
-      1:n,
+      1:n
     )
     
     mb
@@ -46,6 +46,7 @@
     )
     
     mb2
+    autoplot(mb2)  # display a violin plot
 
 ### Example 15.3 (Timings of two multivariate normal generators)
 
