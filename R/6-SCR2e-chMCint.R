@@ -29,7 +29,7 @@
 
 ### Example 6.3 (Monte Carlo integration, unbounded interval)
 
-    x <- seq(.1, 2.5, length = 100)
+    x <- seq(.1, 2.5, length = 10)
     m <- 10000
     u <- runif(m)
     cdf <- numeric(length(x))

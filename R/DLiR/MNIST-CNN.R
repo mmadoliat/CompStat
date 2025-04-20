@@ -1,4 +1,4 @@
-library(keras)
+library(keras3)
 
 # Data Preparation -----------------------------------------------------
 
@@ -37,9 +37,8 @@ y_test <- to_categorical(y_test, num_classes)
 # Define Model -----------------------------------------------------------
 
 # Define model
-model <- keras_model_sequential() %>%
-  layer_conv_2d(filters = 32, kernel_size = c(3,3), activation = 'relu',
-                input_shape = input_shape) %>% 
+model <- keras_model_sequential(input_shape = input_shape) %>%
+  layer_conv_2d(filters = 32, kernel_size = c(3,3), activation = 'relu') %>% 
   layer_conv_2d(filters = 64, kernel_size = c(3,3), activation = 'relu') %>% 
   layer_max_pooling_2d(pool_size = c(2, 2)) %>% 
   layer_dropout(rate = 0.25) %>% 
@@ -73,3 +72,4 @@ scores <- model %>% evaluate(
 # Output metrics
 cat('Test loss:', scores[[1]], '\n')
 cat('Test accuracy:', scores[[2]], '\n')
+

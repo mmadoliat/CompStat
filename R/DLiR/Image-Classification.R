@@ -1,4 +1,4 @@
-library(keras)
+library(keras3)
 
 fashion_mnist <- dataset_fashion_mnist()
 c(train_images, train_labels) %<-% fashion_mnist$train
@@ -58,9 +58,9 @@ for (i in 1:25) {
         main = paste(class_names[train_labels[i] + 1]))
 }
 
-model <- keras_model_sequential()
+model <- keras_model_sequential(input_shape = c(28, 28))
 model %>%
-  layer_flatten(input_shape = c(28, 28)) %>%
+  layer_flatten() %>%
   layer_dense(units = 128, activation = 'relu') %>%
   layer_dense(units = 10, activation = 'softmax')
 
@@ -75,16 +75,15 @@ model %>% fit(train_images, train_labels, epochs = 5, verbose = 2)
 
 score <- model %>% evaluate(test_images, test_labels, verbose = 0)
 
-cat('Test loss:', score[1], "\n")
+cat('Test loss:', score[[1]], "\n")
 
-
-cat('Test accuracy:', score[2], "\n")
+cat('Test accuracy:', score[[2]], "\n")
 
 predictions <- model %>% predict(test_images)
 
 which.max(predictions[1, ])
 
-class_pred <- model %>% predict_classes(test_images)
+class_pred <- model %>% predict(test_images) %>% apply(1, which.max)
 class_pred[1:20]
 
 test_labels[1]
@@ -113,11 +112,11 @@ for (i in 1:25) {
 img <- test_images[1:25, , , drop = FALSE]
 dim(img)
 
-class_pred <- model %>% predict_classes(img)
-class_pred
-
 predictions <- model %>% predict(img)
 predictions
+
+class_pred <- model %>% predict(img) %>% apply(1, which.max)
+class_pred
 
 # subtract 1 as labels are 0-based
 apply(predictions,1,which.max) - 1

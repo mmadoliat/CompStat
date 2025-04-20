@@ -1,4 +1,4 @@
-library(keras)
+library(keras3)
 
 ### Step 1 : Data preprocessing ###
 # Load MNIST (Modified National Institute of Standards and Technology) images datasets 
@@ -15,9 +15,9 @@ y_train <- to_categorical(y_train, 10)
 y_test <- to_categorical(y_test, 10)
 
 ### Step 2 : Model definition ###
-model <- keras_model_sequential() 
+model <- keras_model_sequential(input_shape = c(784)) 
 model %>% 
-  layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
+  layer_dense(units = 256, activation = 'relu') %>% 
   layer_dropout(rate = 0.4) %>% 
   layer_dense(units = 128, activation = 'relu') %>%
   layer_dropout(rate = 0.3) %>%
@@ -34,14 +34,14 @@ model %>% compile(
 history <- model %>% fit(
   x_train, y_train, 
   batch_size = 128, 
-  epoch = 10,
+  epochs = 10,
   validation_split = 0.2
 )
 
 plot(history)
 
-model %>% predict_classes(x_test[1:100,])
+model %>% predict(x_test[1:100,]) %>% apply(1, which.max)-1
 
 round(model %>% predict(x_test[1:9,]),5)
 
-image(t(array_reshape(x_test,c(nrow(x_test), 28,28))[12,28:1,]), axes=FALSE, col = grey(seq(0, 1, length = 256)))
+image(t(array_reshape(x_test,c(nrow(x_test), 28,28))[9,28:1,]), axes=FALSE, col = grey(seq(0, 1, length = 256)))

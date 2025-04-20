@@ -53,13 +53,13 @@ plot(net4)
 
 
 ############## Keras ######################################################
-library(keras)
+library(keras3)
 mu.logo <- data.frame(read.csv("mu-logo.csv"))
 y_train <- mu.logo[,1]
 x_train <- as.matrix(mu.logo[,2:6])
-model <- keras_model_sequential() 
+model <- keras_model_sequential(input_shape = 5) 
 model %>% 
-  layer_dense(units = 1, input_shape = 5) 
+  layer_dense(units = 1) 
   # layer_dense(units = 256, input_shape = 5) %>% 
   # layer_dropout(rate = 0.4) %>% 
   # layer_dense(units = 128) %>%
@@ -77,7 +77,7 @@ model %>% compile(
 history <- model %>% fit(
   x_train, y_train, 
   batch_size = 256, 
-  epoch = 100,
+  epochs = 100,
   validation_split = 0.2
 )
 
