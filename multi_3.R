@@ -3,7 +3,7 @@ library(PermAlgo);library(mvtnorm);library(survival);library(ggfortify);library(
 library(grid);library(ggplot2) ;library(fdapace);library(mgcv);library(tidyverse)  
 library(fda);library(refund);library(ggpubr);library(tidyfun)
 library(dplyr);library(tibble);library(tidyr);library(refundr)
-library(purrr);library(forcats)  
+library(purrr);library(forcats); library(funData); library(MFPCA)
 
 
 ######## ######## ######## ######## ######## ######## ######## ######## ######## 
@@ -363,13 +363,14 @@ kk=1
   
   
   
-  
-  long_data=extended_longitudinal
-  
+  ids <- unique(extended_longitudinal[obstime==0.05 & is.na(Value)]$id)
+  ids
+  long_data=extended_longitudinal[!(id%in%ids)]
+
   # Function to convert data into funData object (handles missing values)
   convert_to_funData <- function(df, variable) {
     df_var <- df %>% filter(Variable == variable)
-    data_matrix <- matrix(df_var$Value, nrow = length(unique(df_var$id)))         #, byrow = TRUE)
+    data_matrix <- matrix(df_var$Value, nrow = length(unique(df_var$id)), byrow = TRUE)
     funData(argvals = time_points, X = data_matrix)
   }
   
@@ -382,6 +383,7 @@ kk=1
   
   # Step 2: Create Multi-Functional Data Object
   mfd <- multiFunData(list(fd_Y1, fd_Y2, fd_Y3,fd_Y4, fd_Y5, fd_Y6))
+  plot(mfd)
   
   # Step 3: Perform Multivariate Functional PCA (MFPCA)
   mfpca_results <- MFPCA(mfd, M = 5,
@@ -395,8 +397,8 @@ kk=1
   
   # Step 5: Convert Predictions Back to Data Frame
   predicted_data <- data.frame(
-    Time = rep(time_points, times = nsample),
-    id = rep(1:nsample, each = length(time_points)),
+    Time = rep(time_points, times = nsample-length(ids)),
+    id = rep((1:nsample)[-as.numeric(ids)], each = length(time_points)),
     Y1_pred = as.vector(t(pred[[1]]@X)),                                          #Adding "t(.)
     Y2_pred = as.vector(t(pred[[2]]@X)),                                          #Adding "t(.)
     Y3_pred = as.vector(t(pred[[3]]@X)),                                          #Adding "t(.)
